@@ -122,28 +122,29 @@
       <label for="message">③ 伝えたいこと</label>
       <textarea id="message" placeholder="例：このプロジェクトの成果をわかりやすく伝えたい"></textarea>
 
-      <button onclick="generateOutput()">構成案をつくる</button>
+      <button onclick="generatePrompt()">構成案をつくる</button>
 
       <div id="output" class="output"></div>
     </div>
 
     <script>
-      function generateOutput() {
+      async function generatePrompt() {
         const purpose = document.getElementById("purpose").value;
         const audience = document.getElementById("audience").value;
         const message = document.getElementById("message").value;
 
-        const output = `
-【構成案】
-🎯 資料の目的：${purpose}
-👥 伝える相手：${audience}
-📝 伝えたいこと：
-${message}
+        const userPrompt = `以下の情報をもとに、プレゼン構成案を日本語で作成してください：\n\n資料の目的：${purpose}\n伝える相手：${audience}\n伝えたいこと：${message}`;
 
-この内容をもとに、スライド構成を提案できます✨
-        `.trim();
+        const response = await fetch("https://asia-northeast1-my-project-menntai.cloudfunctions.net/tonarino-senpai-gemini", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ prompt: userPrompt })
+        });
 
-        document.getElementById("output").textContent = output;
+        const result = await response.json();
+        document.getElementById("output").textContent = result.content || "エラーが発生しました。";
       }
     </script>
   </body>
