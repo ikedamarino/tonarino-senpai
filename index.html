@@ -1,118 +1,26 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>となりの先輩AI🧑‍🏫</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: "M PLUS Rounded 1c", sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 40px 20px;
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      background-color: #fdf3f5;
       color: #333;
+      text-align: center;
+      padding: 50px;
     }
     h1 {
       color: #d11f2d;
-      text-align: center;
     }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 24px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin-top: 16px;
-      font-weight: bold;
-    }
-    select, textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-    button {
-      background-color: #d11f2d;
-      color: #fff;
-      border: none;
-      margin-top: 20px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #b51824;
-    }
-    .output {
-      margin-top: 24px;
-      background: #fff9f9;
-      border: 1px dashed #d11f2d;
-      padding: 16px;
-      border-radius: 8px;
-      white-space: pre-wrap;
+    p {
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>となりの先輩AI🧑‍🏫</h1>
-    
-    <label for="purpose">① 資料の目的</label>
-    <select id="purpose">
-      <option>クライアント提案資料</option>
-      <option>社内報告用プレゼン</option>
-      <option>出向前の自己紹介資料</option>
-      <option>営業用プレゼン</option>
-      <option>業務改善提案</option>
-      <option>AIコンテスト用資料</option>
-    </select>
-
-    <label for="audience">② 誰に伝えたい？</label>
-    <select id="audience">
-      <option>上司</option>
-      <option>チームメンバー</option>
-      <option>部長／マネージャー層</option>
-      <option>経営層</option>
-      <option>出向先メンバー</option>
-      <option>AIコンテスト審査員</option>
-    </select>
-
-    <label for="mainMessage">③ 伝えたいこと</label>
-    <textarea id="mainMessage" rows="4" placeholder="例：このプロジェクトの成果をわかりやすく伝えたい"></textarea>
-
-    <button onclick="generate()">構成案をつくる</button>
-
-    <div class="output" id="output"></div>
-  </div>
-
-  <script>
-    function generate() {
-      const purpose = document.getElementById("purpose").value;
-      const audience = document.getElementById("audience").value;
-      const message = document.getElementById("mainMessage").value;
-
-      const output = `📌 資料の目的：${purpose}
-🎯 伝えたい相手：${audience}
-💬 伝えたいこと：
-${message}
-
-🧠 先輩からのアドバイス：
-- 冒頭で目的をしっかり伝えると、相手に響くよ！
-- ${audience}向けなら、論理的な構成と説得力を意識してみて。
-- 図解やキーワードで視覚的にサポートできるとさらにGOOD！
-
-📚 スライド構成（例）：
-1. 表紙・タイトル
-2. 目的と背景
-3. 伝えたい内容（3ポイント）
-4. まとめ・次のアクション`;
-
-      document.getElementById("output").textContent = output;
-    }
-  </script>
+  <h1>となりの先輩AI🧑‍🏫</h1>
+  <p>プレゼン支援ツールへようこそ！</p>
 </body>
 </html>
