@@ -120,7 +120,7 @@
       </select>
 
       <label for="message">③ 伝えたいこと</label>
-      <textarea id="message" placeholder="例：このプロジェクトの成果をわかりやすく伝えたい"></textarea>
+      <textarea id="message" placeholder="例：アップセル提案したい"></textarea>
 
       <button onclick="generatePrompt()">構成案をつくる</button>
 
@@ -133,18 +133,30 @@
         const audience = document.getElementById("audience").value;
         const message = document.getElementById("message").value;
 
-        const userPrompt = `以下の情報をもとに、プレゼン構成案を日本語で作成してください：\n\n資料の目的：${purpose}\n伝える相手：${audience}\n伝えたいこと：${message}`;
+        const payload = {
+          purpose,
+          audience,
+          message,
+        };
 
-        const response = await fetch("https://asia-northeast1-my-project-menntai.cloudfunctions.net/tonarino-senpai-gemini", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ prompt: userPrompt })
-        });
+        try {
+          const response = await fetch("https://script.google.com/macros/s/【あなたのWebApp URL】/exec", {
+            method: "POST",
+            mode: "no-cors", // 一方向のPOST送信（レスポンス受け取れないがCORS回避）
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
 
-        const result = await response.json();
-        document.getElementById("output").textContent = result.content || "エラーが発生しました。";
+          // レスポンスを受け取れない場合のダミー表示（no-corsの制限）
+          document.getElementById("output").textContent =
+            "🎉 構成案の作成リクエストを送信しました！（GAS側に出力が表示されます）";
+        } catch (error) {
+          console.error("Error:", error);
+          document.getElementById("output").textContent =
+            "⚠️ 構成案の生成に失敗しました。";
+        }
       }
     </script>
   </body>
