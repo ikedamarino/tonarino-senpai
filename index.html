@@ -1,51 +1,57 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>となりの先輩AI🧑‍🏫</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: "M PLUS Rounded 1c", sans-serif;
-      padding: 24px;
-      margin: 0;
-      background-color: #f7f7f7;
-      color: #333;
+      background-color: #f8f9fa;
+      padding: 20px;
     }
+
     h1 {
-      color: #d11f2d;
       text-align: center;
-      margin-bottom: 32px;
+      color: #d11f2d;
     }
+
     label {
       display: block;
+      margin-top: 20px;
       font-weight: bold;
-      margin: 16px 0 8px;
     }
+
     select, textarea {
       width: 100%;
       padding: 10px;
+      margin-top: 5px;
+      font-size: 1rem;
       border-radius: 6px;
       border: 1px solid #ccc;
-      font-size: 16px;
     }
+
     button {
-      margin-top: 24px;
-      padding: 14px 24px;
-      font-size: 16px;
       background-color: #d11f2d;
       color: white;
+      padding: 12px 24px;
+      font-size: 1rem;
       border: none;
       border-radius: 8px;
+      margin-top: 30px;
       cursor: pointer;
-      display: block;
       width: 100%;
     }
-    .output-box {
-      margin-top: 24px;
-      padding: 16px;
+
+    button:hover {
+      background-color: #b80f25;
+    }
+
+    .result {
+      margin-top: 30px;
+      padding: 20px;
       background-color: #ffecec;
-      border: 2px dotted #d11f2d;
+      border: 1.5px dashed #d11f2d;
       border-radius: 8px;
       white-space: pre-wrap;
     }
@@ -103,42 +109,40 @@
   </select>
 
   <label for="message">③ 伝えたいこと</label>
-  <textarea id="message" rows="4" placeholder="アップセル提案したい など"></textarea>
+  <textarea id="message" rows="4" placeholder="自由に書いてください"></textarea>
 
   <button onclick="generatePrompt()">構成案をつくる</button>
 
-  <div id="output" class="output-box"></div>
+  <div class="result" id="resultBox"></div>
 
   <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbz1wygYdJZ-8J4WdK3AN-cYoW1YxdFEnjm-FqUeY25CRXGitQT5LQ-e-bIbV9pxWKAfIw/exec";
+
     async function generatePrompt() {
       const purpose = document.getElementById("purpose").value;
       const audience = document.getElementById("audience").value;
       const message = document.getElementById("message").value;
+      const resultBox = document.getElementById("resultBox");
 
-      const payload = {
-        purpose,
-        audience,
-        message
-      };
-
-      document.getElementById("output").innerText = "🛠 構成案を作成中です…（少々お待ちください）";
+      resultBox.innerHTML = "⏳ 構成案を生成中です...";
 
       try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbwPPMzaMqqyW4kRBiNZHFo8gHgWtruk-eEQ2N-aMrygekWCozxGMpU7c7ju4hqxYHc7SA/exec", {
+        const response = await fetch(GAS_URL, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({ purpose, audience, message }),
         });
 
-        if (!response.ok) throw new Error("API応答が不正");
-
         const data = await response.json();
-        document.getElementById("output").innerText = data.result || "⚠️ 構成案が空でした。";
+        if (data.success) {
+          resultBox.innerHTML = data.structure;
+        } else {
+          resultBox.innerHTML = `⚠️ 構成案の生成に失敗しました：${data.error}`;
+        }
       } catch (error) {
-        console.error("Fetchエラー:", error);
-        document.getElementById("output").innerText = "⚠️ 構成案の生成に失敗しました。もう一度お試しください。";
+        resultBox.innerHTML = "⚠️ 構成案の生成に失敗しました。もう一度お試しください。";
       }
     }
   </script>
